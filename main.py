@@ -25,7 +25,7 @@ def get_players(list):
     return players
 
 #im = Image.open("lolqueue_example.jpg")
-output_dict = pytesseract.image_to_string("lolqueue_example_300.png", config=r'-l eng --psm 3 --dpi 300')
+output_dict = pytesseract.image_to_string("lolqueue_example_300.jpg", config=r'-l eng --psm 3 --dpi 300')
 output_list = output_to_array(output_dict)
 players = get_players(output_list)
-print(players)
+print("Players are: ", players)
