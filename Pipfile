@@ -9,10 +9,7 @@ pep8 = "*"
 [packages]
 pillow = "*"
 pytesseract = "*"
-pipwin64 = "*"
-pipwin32 = "*"
 pywin32 = "*"
-pycodestyle = "*"
 
 [requires]
 python_version = "3.6"

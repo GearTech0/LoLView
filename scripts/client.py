@@ -1,22 +1,22 @@
-from PIL import Image, ImageGrab
+from PIL import Image, ImageGrab, JpegImagePlugin
 from pytesseract import Output
 import pytesseract
 import win32gui
 import win32com.client
 
-"""
-    1900 = 1 inch/96 pixels = 19.7917in
-    600 = 1 inch/96 pixels = 6.25in
-"""
 
-
-def get_client_screenshot():
+def get_client_screenshot(dest=None):
     """
     Screenshot the LoL client and scale image to be 300dpi
 
+    Parameters
+    ----------
+    dest : path
+        Save destination (optional)
+
     Returns
     -------
-    Image
+    PIL.Image.Image
         Processed image of LoL client
     """
     hwnd = win32gui.FindWindow(None, "League of Legends")
@@ -27,20 +27,47 @@ def get_client_screenshot():
 
     win32gui.SetForegroundWindow(hwnd)
     bbox = win32gui.GetWindowRect(hwnd)
+
+    tess_dpi = 300
     img = ImageGrab.grab(bbox)
+    img = scale_and_resample(img, tess_dpi)    # Scale to tess specs
 
-    # Calculate new size based on DPI change to 300
-    width, height = img.size
-    dpi = 96
-    if img.info['dpi']:
-        dpi = img.info['dpi']
+    if dest is not None:
+        img.save(dest, "JPEG", dpi=(tess_dpi, tess_dpi))    # Saves debug
 
-    width = width * (300 / dpi)
-    height = height * (300 / dpi)
-
-    img = img.resize((width, height), Image.ANTIALIAS)
-    img.save("image_300.jpg", "JPEG", dpi=(300, 300))
     return img
+
+
+def scale_and_resample(img, dest_dpi):
+    """
+    Scales target image and resamples to new DPI
+
+    Parameters
+    ----------
+    img : PIL.Image.Image or path
+        Target image to scale and resample
+
+    Returns
+    -------
+    PIL.Image.Image
+        New scaled and resampled image
+    """
+    print(type(img))
+    if not isinstance(img, Image.Image):
+        img = Image.open(img)
+
+    width, height = img.size
+    try:
+        dpi = img.info['dpi']
+        print("Found DPI: ", dpi)
+    except KeyError as e:
+        dpi = (75, 75)
+        print("Defaulted DPI to ", dpi)
+
+    width = int(width * (dest_dpi / dpi[0]))
+    height = int(height * (dest_dpi / dpi[1]))
+
+    return img.resize((width, height), Image.ANTIALIAS)
 
 
 def parse_tesseract_output(output):
@@ -93,7 +120,7 @@ def get_players(list):
     return players
 
 
-def get_players_from_image(client_image="image_300.jpg"):
+def get_players_from_image(client_image):
     """
     Use pytesseract to extract player names from LoL client image
 
