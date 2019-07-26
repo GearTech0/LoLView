@@ -1,4 +1,6 @@
-from PIL import Image, ImageGrab, JpegImagePlugin
+from PIL import Image
+from PIL import ImageGrab
+from PIL import JpegImagePlugin
 from pytesseract import Output
 import pytesseract
 import win32gui

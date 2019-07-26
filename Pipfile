@@ -9,7 +9,8 @@ pep8 = "*"
 [packages]
 pillow = "*"
 pytesseract = "*"
-pywin32 = "*"
+pywin32 = {version="*", sys_platform="== 'win32'"}
+riotwatcher = "*"
 
 [requires]
 python_version = "3.6"
