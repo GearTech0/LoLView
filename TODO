@@ -1,0 +1,7 @@
+Add top 5 champions
+Add win rate
+Add recent 10 ranked games and win rate
+Add rank and LP
+Add preffered positions and win rates to them
+Add a configuration file that specifies LoL client information
+Add machine learning champion recognition so that LoLView can look up information on player's champion hover
