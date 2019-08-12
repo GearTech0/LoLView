@@ -12,12 +12,3 @@ Teammates and search up their stats against the League of Legends API to give
 you more insight as to who your teammates are. 
 
 ## Tutorial
-
-
-# Process
-Screenshot the application and check for names. When names are recieved, look
-up the players and deliver current rank, mmr, top 3 champs (as well as their winrate), 
-main role, and streak.
-
-install Tesseract OCR, add to environment variables
-install pytesseract, Pillow
